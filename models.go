@@ -7,9 +7,9 @@ type Video struct {
 }
 
 type Endpoint struct {
-	id     int
-	videos []Video
-	caches []Cache
+	id       int
+	videos   []Video
+	cacheIds []int
 }
 
 type EndpointInfo struct {
