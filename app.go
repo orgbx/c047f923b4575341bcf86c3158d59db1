@@ -3,7 +3,7 @@ package main
 import ("fmt"
 	"os"
 	"bufio"
-	"path/filepath"
+
 	"strings"
 	"strconv"
 )
@@ -20,13 +20,15 @@ func main() {
 
 	fmt.Println("hello world")
 
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	assert(err)
+	//dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	//assert(err)
+
+	dir := "inputs/"
 
 	files := []string{"v.in"}
 
 	for _,v  := range files {
-		readGoogleHashcodeFile(dir+"/inputs/"+v)
+		readGoogleHashcodeFile(dir+v)
 		writeSolution("solution_"+v)
 	}
 
