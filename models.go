@@ -52,6 +52,6 @@ type ResultOfParse struct {
 
 type Transformed struct {
 	endpoints           []Endpoint
-	caches              []Cache
+	caches              []*Cache
 	maxCachedVideosSize int
 }
