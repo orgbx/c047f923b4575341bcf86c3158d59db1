@@ -9,20 +9,20 @@ func process(input Transformed) Transformed {
 	fmt.Println("process transformed")
 
 	final := initialOrder(input)
-	for _,endpoint := range final.endpoints {
+	for _, endpoint := range final.endpoints {
 		cache := getCacheWithSpace(final)
-		for _,video := range endpoint.videos {
+		for _, video := range endpoint.videos {
 			cache.size = cache.size - video.size
 			cache.videos = append(cache.videos, video)
 		}
 	}
 
-	return Transformed{}
+	return final
 }
 
 func getCacheWithSpace(input Transformed) Cache {
 
-	for _,v := range input.caches {
+	for _, v := range input.caches {
 		if v.size > 0 {
 			return v
 		}
