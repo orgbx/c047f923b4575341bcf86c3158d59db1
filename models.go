@@ -48,6 +48,7 @@ type ResultOfParse struct {
 	endpoints      int
 	numberOfCaches int
 	size           int
+	endpointsInfo  []EndpointInfo
 }
 
 type Transformed struct {

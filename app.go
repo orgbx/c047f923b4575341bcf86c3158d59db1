@@ -27,9 +27,11 @@ func main() {
 
 	files := []string{"m.in"}
 
+	trans := Transformed{}
+	trans.caches = []Cache{Cache{}}
 	for _,v  := range files {
 		readGoogleHashcodeFile(dir+v)
-		writeSolution("solution_"+v)
+		writeSolution("solution_"+v,trans)
 	}
 
 
@@ -65,6 +67,8 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 	var currentEndpoint EndpointInfo;
 	enpointNumber := 0
 	var cacheInfo  = []CacheInfo{}
+
+	var endpoints  = []EndpointInfo{}
 
 	enpointIteration := 0
 
@@ -119,6 +123,8 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 
 
 					currentEndpoint = EndpointInfo{id:enpointNumber,latency:convertToInt(linesplited[0])}
+					endpoints = append(endpoints,currentEndpoint)
+
 					endpointCacheNumber = convertToInt(linesplited[1])
 					enpointNumber = enpointNumber +1
 					enpointDetailIteration = 0
@@ -171,7 +177,7 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 
 	file.Close()
 
-	return ResultOfParse{caches:cacheInfo,requestInfo:requests,videos:videos,endpoints:numberOfEnpoints,numberOfCaches:numberOfCaches,size:cacheSize}
+	return ResultOfParse{caches:cacheInfo,requestInfo:requests,videos:videos,endpoints:numberOfEnpoints,numberOfCaches:numberOfCaches,size:cacheSize,endpointsInfo:endpoints}
 }
 
 func convertToInt(str string) (int){
@@ -180,14 +186,27 @@ func convertToInt(str string) (int){
 }
 
 
-func writeSolution(result string){
+func writeSolution(result string,val Transformed){
 
 	file,err := os.Create(result)
 	assert(err)
 
 	defer file.Close()
+	file.WriteString(strconv.Itoa(len(val.caches))+"\n")
 
-	file.WriteString("writes\n")
+	for _, v := range val.caches {
+		file.WriteString(strconv.Itoa(v.id)+" ")
+		for i,v2 := range v.videos {
+			if (i < len(v.videos) - 1) {
+				file.WriteString(strconv.Itoa(v2.id)+" ")
+			}else {
+				file.WriteString(strconv.Itoa(v2.id))
+			}
+
+		}
+	}
+
+
 
 	file.Sync()
 
