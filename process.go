@@ -8,9 +8,20 @@ import (
 func process(input Transformed) Transformed {
 	fmt.Println("process transformed")
 
-	//final := initialOrder(input)
+	final := initialOrder(input)
+	for endpoint := range final.endpoints{
+		if len(endpoint.caches) == 0 {
+
+		}
+	}
 
 	return Transformed{}
+}
+
+func getCacheWithSpace(input) Cache{
+	for cache:= range input.caches{
+		if cache.size > 0 
+	}
 }
 
 func initialOrder(result Transformed) Transformed {

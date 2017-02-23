@@ -8,8 +8,8 @@ type Video struct {
 
 type Endpoint struct {
 	id     int
-	videos []Video
-	caches []Cache
+	videos   []Video
+	cacheIds []int
 }
 
 type EndpointInfo struct {
@@ -35,6 +35,7 @@ type Cache struct {
 	id      int
 	videos  []Video
 	latency int
+	size    int
 }
 
 type Requests struct {
