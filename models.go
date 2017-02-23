@@ -9,7 +9,7 @@ type Video struct {
 type Endpoint struct {
 	id     int
 	videos []Video
-	caches []*Cache
+	caches []Cache
 }
 
 type EndpointInfo struct {
@@ -52,6 +52,6 @@ type ResultOfParse struct {
 
 type Transformed struct {
 	endpoints           []Endpoint
-	caches              []*Cache
+	caches              []Cache
 	maxCachedVideosSize int
 }
