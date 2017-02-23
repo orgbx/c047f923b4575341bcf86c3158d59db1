@@ -25,7 +25,7 @@ func main() {
 
 	dir := "inputs/"
 
-	files := []string{"v.in"}
+	files := []string{"m.in"}
 
 	for _,v  := range files {
 		readGoogleHashcodeFile(dir+v)
@@ -128,7 +128,8 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 		linesplited := strings.Split(string(line), " ")
 
 		if (counter == 0){
-			//
+			println("First line")
+			println(string(line))
 			numberOfVideos = convertToInt(linesplited[0])
 			numberOfEnpoints = convertToInt(linesplited[1])
 			numberOfRequest = convertToInt(linesplited[2])
@@ -136,14 +137,28 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 			cacheSize = convertToInt(linesplited[4])
 
 		}else if (counter == 1){
-			for i := 0; i < numberOfVideos; i++ {
+			println("Second line")
+			println(string(line))
+			println(numberOfVideos)
+			println(len(linesplited))
+			//panic(numberOfVideos  != len(linesplited))
+			total := numberOfVideos - 1
+			for i := 0; i < total; i++ {
+				println(i)
+				println(total)
 				videos = append(videos,Video{id:i,size:convertToInt(linesplited[i])})
 			}
 		}else {
 			// ENDPOINTS
+			//println("endpoits")
+			println(string(line))
+			if enpointIteration < numberOfEnpoints   {
+				//print("enpointIteration")
+				println("enpointIteration"+strconv.Itoa(enpointIteration))
 
-			if enpointIteration < numberOfEnpoints {
-				if endpointCacheNumber < enpointDetailIteration {
+				if  endpointCacheNumber != 0 && enpointDetailIteration < endpointCacheNumber  {
+					//print("enpointDetailIteration")
+					println("enpointIteration"+strconv.Itoa(enpointDetailIteration))
 
 					enpointDetailIteration = enpointDetailIteration +1
 					cacheInfo = append(cacheInfo,CacheInfo{id:convertToInt(linesplited[0]),latency:convertToInt(linesplited[1])})
@@ -163,7 +178,11 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 				}
 			}else {
 
+				if len(cacheInfo) > 0 {
+					currentEndpoint.cacheInfo = cacheInfo
+				}
 
+				println("requjest")
 				// REQUEST
 				requests := append(requests,RequestInfo{numRequest:convertToInt(linesplited[0]),idVideo:convertToInt(linesplited[1]),endpointId:convertToInt(linesplited[2])})
 
@@ -178,10 +197,14 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 		}
 
 		counter = counter + 1
+		line, _, _ = reader.ReadLine()
 	}
 
-	panic(requestsIteration != numberOfRequest)
+	//panic(requestsIteration != numberOfRequest)
 
+	if(requestsIteration != numberOfRequest){
+		panic("not iqual ")
+	}
 
 
 	file.Close()
