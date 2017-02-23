@@ -28,7 +28,7 @@ func main() {
 	files := []string{"m.in"}
 
 	trans := Transformed{}
-	trans.caches = []Cache{Cache{}}
+	trans.caches = []Cache{Cache{id:1,size:12,videos:[]Video{Video{size:2,id:3},Video{size:2,id:4}}},Cache{id:3,size:12,videos:[]Video{Video{size:2,id:5},Video{size:2,id:7}}}}
 	for _,v  := range files {
 		readGoogleHashcodeFile(dir+v)
 		writeSolution("solution_"+v,trans)
@@ -194,16 +194,20 @@ func writeSolution(result string,val Transformed){
 	defer file.Close()
 	file.WriteString(strconv.Itoa(len(val.caches))+"\n")
 
-	for _, v := range val.caches {
+	for i2, v := range val.caches {
 		file.WriteString(strconv.Itoa(v.id)+" ")
 		for i,v2 := range v.videos {
 			if (i < len(v.videos) - 1) {
 				file.WriteString(strconv.Itoa(v2.id)+" ")
 			}else {
 				file.WriteString(strconv.Itoa(v2.id))
+				if (i2 < len(val.caches) - 1) {
+					file.WriteString("\n")
+				}
 			}
 
 		}
+
 	}
 
 
