@@ -1,8 +1,9 @@
 package main
 
 type Video struct {
-	id   int
-	size int
+	id         int
+	size       int
+	numRequest int
 }
 
 type Endpoint struct {
@@ -30,8 +31,9 @@ type RequestInfo struct {
 const MAX_CACHED_VIDEOS_SIZE = 500000
 
 type Cache struct {
-	id     int
-	videos []Video
+	id      int
+	videos  []Video
+	latency int
 }
 
 type Requests struct {
@@ -49,6 +51,6 @@ type ResultOfParse struct {
 
 type Transformed struct {
 	endpoints           []Endpoint
-	caches              []Cache
+	caches              []CacheInfo
 	maxCachedVideosSize int
 }
