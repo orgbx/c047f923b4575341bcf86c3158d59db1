@@ -25,7 +25,7 @@ func main() {
 
 	dir := "inputs/"
 
-	files := []string{"test.in"}
+	files := []string{"m.in"}
 
 	for _,v  := range files {
 		readGoogleHashcodeFile(dir+v)
@@ -71,6 +71,8 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 	var requests  = []RequestInfo{}
 	requestsIteration := 0
 
+	notFirst := false
+
 	for line != nil {
 		assert(error)
 		//process line
@@ -101,29 +103,40 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 			// ENDPOINTS
 			//println("endpoits")
 			println(string(line))
-			if enpointIteration < numberOfEnpoints   {
+			if enpointIteration < numberOfEnpoints     {
 				//print("enpointIteration")
 				println("enpointIteration"+strconv.Itoa(enpointIteration))
 
-				if  endpointCacheNumber != 0 && enpointDetailIteration < endpointCacheNumber  {
+				if   enpointDetailIteration < endpointCacheNumber  {
 					//print("enpointDetailIteration")
-					println("enpointIteration"+strconv.Itoa(enpointDetailIteration))
-
+					println("enpointDetailIteration"+strconv.Itoa(enpointDetailIteration))
+					println("endpointCacheNumber"+strconv.Itoa(endpointCacheNumber))
 					enpointDetailIteration = enpointDetailIteration +1
 					cacheInfo = append(cacheInfo,CacheInfo{id:convertToInt(linesplited[0]),latency:convertToInt(linesplited[1])})
+					notFirst = true
 				}else{
 
-					if len(cacheInfo) > 0 {
-						currentEndpoint.cacheInfo = cacheInfo
-					}
+
 
 					currentEndpoint = EndpointInfo{id:enpointNumber,latency:convertToInt(linesplited[0])}
 					endpointCacheNumber = convertToInt(linesplited[1])
 					enpointNumber = enpointNumber +1
 					enpointDetailIteration = 0
 					cacheInfo  = []CacheInfo{}
+					if(notFirst){
+						enpointIteration = enpointIteration + 1
+					}
 
-					enpointIteration = enpointIteration + 1
+
+
+
+
+					//if ( convertToInt(linesplited[0]) == 696 &&  convertToInt(linesplited[1]) == 2) {
+		//						panic("s")
+					//}
+
+
+
 				}
 			}else {
 
@@ -151,7 +164,7 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 
 	//panic(requestsIteration != numberOfRequest)
 
-	if(requestsIteration != numberOfRequest){
+	if(requestsIteration != numberOfRequest -1 ){
 		panic("not iqual ")
 	}
 
