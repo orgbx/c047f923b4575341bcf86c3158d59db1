@@ -25,7 +25,7 @@ func main() {
 
 	dir := "inputs/"
 
-	files := []string{"m.in"}
+	files := []string{"test.in"}
 
 	for _,v  := range files {
 		readGoogleHashcodeFile(dir+v)
@@ -36,57 +36,6 @@ func main() {
 
 }
 
-type Video struct {
-	id int
-	size int
-}
-
-/*type Endpoint struct {
-	id int
-	videos []Video
-}*/
-
-type Endpoint struct{
-	id int
-	cacheInfo []CacheInfo
-	latency int
-}
-
-type CacheInfo struct{
-
-	id int
-	latency int
-
-}
-
-type RequestInfo struct {
-	numRequest int
-	idVideo int
-	endpointId int
-}
-
-
-
-const MAX_CACHED_VIDEOS_SIZE = 500000
-
-type Cache struct {
-	id int
-	videos []Video
-}
-
-type Requests struct {
-	latency int
-
-}
-
-type ResultOfParse struct {
-	videos []Video
-	caches []CacheInfo
-	requestInfo []RequestInfo
-	endpoints int
-	numberOfCaches int
-	size int
-}
 
 
 func readGoogleHashcodeFile( path string) (ResultOfParse){
@@ -113,7 +62,7 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 
 	endpointCacheNumber := 0
 	enpointDetailIteration := 0
-	var currentEndpoint Endpoint;
+	var currentEndpoint EndpointInfo;
 	enpointNumber := 0
 	var cacheInfo  = []CacheInfo{}
 
@@ -168,7 +117,7 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 						currentEndpoint.cacheInfo = cacheInfo
 					}
 
-					currentEndpoint = Endpoint{id:enpointNumber,latency:convertToInt(linesplited[0])}
+					currentEndpoint = EndpointInfo{id:enpointNumber,latency:convertToInt(linesplited[0])}
 					endpointCacheNumber = convertToInt(linesplited[1])
 					enpointNumber = enpointNumber +1
 					enpointDetailIteration = 0
