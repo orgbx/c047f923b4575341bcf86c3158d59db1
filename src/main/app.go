@@ -6,6 +6,7 @@ import ("fmt"
 
 	"strings"
 	"strconv"
+
 )
 
 
@@ -25,13 +26,17 @@ func main() {
 
 	dir := "inputs/"
 
-	files := []string{"m.in"}
+	files := []string{"me_at_the_zoo.in"}
 
 	trans := Transformed{}
 	trans.caches = []Cache{Cache{id:1,size:12,videos:[]Video{Video{size:2,id:3},Video{size:2,id:4}}},Cache{id:3,size:12,videos:[]Video{Video{size:2,id:5},Video{size:2,id:7}}}}
 	for _,v  := range files {
-		readGoogleHashcodeFile(dir+v)
-		writeSolution("solution_"+v,trans)
+		res := readGoogleHashcodeFile(dir+v)
+
+		trs := transform(res)
+		println(len(trs.endpoints))
+		finaRes := process(trs)
+		writeSolution("solution_"+v,finaRes)
 	}
 
 
@@ -116,19 +121,25 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 					println("enpointDetailIteration"+strconv.Itoa(enpointDetailIteration))
 					println("endpointCacheNumber"+strconv.Itoa(endpointCacheNumber))
 					enpointDetailIteration = enpointDetailIteration +1
-					cacheInfo = append(cacheInfo,CacheInfo{id:convertToInt(linesplited[0]),latency:convertToInt(linesplited[1])})
+					currentEndpoint.cacheInfo  = append(currentEndpoint.cacheInfo ,CacheInfo{id:convertToInt(linesplited[0]),latency:convertToInt(linesplited[1])})
+					cacheInfo   = append(cacheInfo ,CacheInfo{id:convertToInt(linesplited[0]),latency:convertToInt(linesplited[1])})
+					println("Append result "+strconv.Itoa(len(currentEndpoint.cacheInfo)))
 					notFirst = true
 				}else{
 
-
+					if(notFirst){
+						endpoints = append(endpoints,currentEndpoint)
+					}
 
 					currentEndpoint = EndpointInfo{id:enpointNumber,latency:convertToInt(linesplited[0])}
-					endpoints = append(endpoints,currentEndpoint)
+					//currentEndpoint.cacheInfo = cacheInfo
+					println(len(currentEndpoint.cacheInfo))
+
 
 					endpointCacheNumber = convertToInt(linesplited[1])
 					enpointNumber = enpointNumber +1
 					enpointDetailIteration = 0
-					cacheInfo  = []CacheInfo{}
+					cacheInfo   = []CacheInfo{}
 					if(notFirst){
 						enpointIteration = enpointIteration + 1
 					}
@@ -152,11 +163,11 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 
 				println("requjest")
 				// REQUEST
-				requests := append(requests,RequestInfo{numRequest:convertToInt(linesplited[0]),idVideo:convertToInt(linesplited[1]),endpointId:convertToInt(linesplited[2])})
+				requests = append(requests,RequestInfo{numRequest:convertToInt(linesplited[0]),idVideo:convertToInt(linesplited[1]),endpointId:convertToInt(linesplited[2])})
 
 				requestsIteration = requestsIteration + 1
 
-				_ = requests
+
 
 			}
 
@@ -177,7 +188,7 @@ func readGoogleHashcodeFile( path string) (ResultOfParse){
 
 	file.Close()
 
-	return ResultOfParse{caches:cacheInfo,requestInfo:requests,videos:videos,endpoints:numberOfEnpoints,numberOfCaches:numberOfCaches,size:cacheSize,endpointsInfo:endpoints}
+	return ResultOfParse{requestInfo:requests,videos:videos,endpoints:numberOfEnpoints,numberOfCaches:numberOfCaches,size:cacheSize,endpointsInfo:endpoints}
 }
 
 func convertToInt(str string) (int){

@@ -9,16 +9,26 @@ func transform(input ResultOfParse) Transformed {
 
 	var trans = Transformed{}
 
-	trans.caches = getCaches(input.caches)
+	trans.caches = getCaches(input)
 	trans.endpoints = getEndpoints(input)
 	trans.maxCachedVideosSize = input.size
 	return trans
 }
 
-func getCaches(input []CacheInfo) []Cache {
+func getCaches(input ResultOfParse) []Cache {
 	var result []Cache
-	for _, cache := range input {
-		result = append(result, Cache{id: cache.id, videos: make([]Video, 0), latency: cache.latency})
+	var cahesInfo []CacheInfo
+	for _,v := range input.endpointsInfo {
+		for _,v2 := range v.cacheInfo{
+			cahesInfo = append(cahesInfo,v2)
+		}
+
+	}
+
+	println(len(cahesInfo ))
+	for _, cache := range cahesInfo {
+		println("asd")
+		result = append(result, Cache{id: cache.id, videos: make([]Video, 0), latency: cache.latency,size:input.size})
 	}
 	return result
 }

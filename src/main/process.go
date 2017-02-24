@@ -10,11 +10,17 @@ func process(input Transformed) Transformed {
 
 	final := initialOrder(input)
 	for _, endpoint := range final.endpoints {
+		fmt.Println("alog2")
 		cache := getCacheWithSpace(final)
-		for _, video := range endpoint.videos {
-			cache.size = cache.size - video.size
-			cache.videos = append(cache.videos, video)
+		if(cache.id != -1){
+			fmt.Println("alog1")
+			for _, video := range endpoint.videos {
+				fmt.Println("alog")
+				cache.size = cache.size - video.size
+				cache.videos = append(cache.videos, video)
+			}
 		}
+
 	}
 
 	return final
@@ -23,10 +29,13 @@ func process(input Transformed) Transformed {
 func getCacheWithSpace(input Transformed) Cache {
 
 	for _, v := range input.caches {
+		fmt.Println(v.size)
 		if v.size > 0 {
 			return v
 		}
 	}
+
+	return Cache{id:-1}
 
 }
 

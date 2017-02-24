@@ -44,7 +44,6 @@ type Requests struct {
 
 type ResultOfParse struct {
 	videos         []Video
-	caches         []CacheInfo
 	requestInfo    []RequestInfo
 	endpoints      int
 	numberOfCaches int
